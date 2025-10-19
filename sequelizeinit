@@ -1,0 +1,11 @@
+npx sequelize-cli model:generate --name User --attributes username:string,address:string,phone:string,sex:string,groupId:integer,email:string,password:string --force
+
+npx sequelize-cli model:generate --name Role --attributes url:string,description:string  --force
+
+npx sequelize-cli model:generate --name Project --attributes name:string,description:text,startDate:date,customerId:integer --force
+
+npx sequelize-cli model:generate --name ProjectUser --attributes projectId:integer,userId:integer  --force
+
+npx sequelize-cli model:generate --name Group --attributes name:string,description:string  --force
+
+npx sequelize-cli model:generate --name GroupRole --attributes groupId:integer,roleId:integer  --force

@@ -8,20 +8,32 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            // define association here
+            User.belongsTo(models.Group, {
+                foreignKey: "groupId",
+                onDelete: "SET NULL",
+            });
+            User.belongsToMany(models.Project, {
+                through: models.Project_User,
+                foreignKey: "userId",
+                otherKey: "projectId",
+            });
         }
     }
     User.init(
         {
+            username: DataTypes.STRING,
+            address: DataTypes.STRING,
+            phone: DataTypes.STRING,
+            sex: DataTypes.STRING,
+            groupId: DataTypes.INTEGER,
             email: DataTypes.STRING,
             password: DataTypes.STRING,
-            username: DataTypes.STRING,
         },
         {
             sequelize,
             modelName: "User",
-            tableName: "Users",
         }
     );
+
     return User;
 };
