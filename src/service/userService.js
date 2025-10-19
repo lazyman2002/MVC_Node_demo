@@ -78,4 +78,56 @@ const deleteUser = async (userId) => {
         await connection.end();
     }
 };
-module.exports = { createNewUser, getUsetList, deleteUser };
+
+const updateUser = async (userId, email, username) => {
+    const connection = await mysql.createPool({
+        host: dotenv.DB_HOST || "localhost",
+        user: dotenv.DB_USER || "root",
+        database: dotenv.DB_NAME || "jwt",
+        Promise: Bluebird,
+    });
+
+    try {
+        await connection.execute(
+            "update `users` set `email` = ?, `username` = ? where `id` = ?;",
+            [email, username, userId]
+        );
+        console.log("User updated successfully");
+    } catch (err) {
+        console.error("Error updating user:", err);
+    } finally {
+        await connection.end();
+    }
+};
+
+const getUserById = async (userId) => {
+    const connection = await mysql.createPool({
+        host: dotenv.DB_HOST || "localhost",
+        user: dotenv.DB_USER || "root",
+        database: dotenv.DB_NAME || "jwt",
+        Promise: Bluebird,
+    });
+    try {
+        const [rows, fields] = await connection.execute(
+            "select * from `users` where `id` = ?;",
+            [userId]
+        );
+        if (rows.length > 0) {
+            return rows[0];
+        }
+        return null;
+    } catch (error) {
+        console.error("Error fetching user by ID:", error);
+        return null;
+    } finally {
+        await connection.end();
+    }
+};
+
+module.exports = {
+    createNewUser,
+    getUsetList,
+    deleteUser,
+    updateUser,
+    getUserById,
+};
