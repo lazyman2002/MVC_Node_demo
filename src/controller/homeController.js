@@ -1,10 +1,4 @@
-import mysql from "mysql2";
-
-const connection = mysql.createPool({
-    host: "localhost",
-    user: "root",
-    database: "jwt",
-});
+import userService from "../service/userService";
 
 const handleHelloWorld = (req, res) => {
     return res.render("home");
@@ -19,20 +13,10 @@ const handleCreateNewUser = (req, res) => {
     let password = req.body.passwordName;
     let username = req.body.usernameName;
 
-    connection.query(
-        "insert into `users`(`email`, `password`, `username`) values (?, ?, ?);",
-        [email, password, username],
-        (err, results, fields) => {
-            if (err) {
-                console.error("Error inserting user:", err);
-                return res.status(500).send("Error creating user.");
-            }
-            console.log(results);
-            console.log(fields);
-            // return res.send("User created successfully.");
-        }
-    );
-    return res.send("User creation logic not implemented yet.", req);
+    // userService.createNewUser(email, password, username);
+    userService.getUsetList();
+
+    return res.send("User creation logic not implemented yet.");
 };
 
 module.exports = { handleHelloWorld, handleUserPage, handleCreateNewUser };
