@@ -4,8 +4,9 @@ const handleHelloWorld = (req, res) => {
     return res.render("home");
 };
 
-const handleUserPage = (req, res) => {
-    return res.render("user");
+const handleUserPage = async (req, res) => {
+    let userList = await userService.getUsetList();
+    return res.render("user", { userList });
 };
 
 const handleCreateNewUser = (req, res) => {
@@ -13,10 +14,18 @@ const handleCreateNewUser = (req, res) => {
     let password = req.body.passwordName;
     let username = req.body.usernameName;
 
-    // userService.createNewUser(email, password, username);
-    userService.getUsetList();
-
-    return res.send("User creation logic not implemented yet.");
+    userService.createNewUser(email, password, username);
+    return res.redirect("/user");
 };
 
-module.exports = { handleHelloWorld, handleUserPage, handleCreateNewUser };
+const handleDeleteUser = async (req, res) => {
+    await userService.deleteUser(req.params.id);
+    return res.redirect("/user");
+};
+
+module.exports = {
+    handleHelloWorld,
+    handleUserPage,
+    handleCreateNewUser,
+    handleDeleteUser,
+};
