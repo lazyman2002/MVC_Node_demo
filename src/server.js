@@ -3,6 +3,8 @@ import bodyParser from "body-parser";
 
 import configViewEngine from "./config/viewEngine.js";
 import initWebRoutes from "./routes/web.js";
+import initAPIRoutes from "./routes/api.js";
+import configCORS from "./config/cors.js";
 // import connection from "./config/connectDB.js";
 
 require("dotenv").config();
@@ -20,8 +22,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 //test connection db
 // connection();
 
+configCORS(app);
+
 //init web routes
 initWebRoutes(app);
+initAPIRoutes(app);
 
 app.listen(PORT, () => {
     console.log(`Server is running on http://localhost:${PORT}`);
